@@ -1,0 +1,16 @@
+﻿# CLion project files
+.idea/
+*.iml
+
+# CMake build files
+cmake-build-*/
+**/cmake-build-*/
+CMakeLists.txt.user
+
+# Executables
+*.exe
+*.out
+
+# Temporary files
+*.swp
+*~
