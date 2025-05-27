@@ -15,7 +15,6 @@ add_library(DynaPoseLib SHARED
 target_include_directories(DynaPoseLib PUBLIC
         ${CMAKE_SOURCE_DIR}/include
         ${CMAKE_CURRENT_SOURCE_DIR}/DynaposeAPI
-        ${CMAKE_SOURCE_DIR}/external/gltf
 )
 
 target_precompile_headers(DynaPoseLib PRIVATE

@@ -7,9 +7,6 @@
 #include <memory>
 #include <vector>
 
-#include "../../PCH.h"
-
-
 namespace DynaPose {
 
     class DynaposeSceneManager {
