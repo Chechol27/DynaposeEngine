@@ -20,11 +20,12 @@ namespace DynaPose {
         //Initialize new scene  based on this model
         if (ret)
         {
-            models.push_back(std::make_shared<tinygltf::Model>());
+            std::shared_ptr<tinygltf::Model> modelPtr = std::make_shared<tinygltf::Model>(model);
+            models.push_back(modelPtr);
             for (auto& scene : model.scenes)
             {
-                DynaPoseScene dynaPoseScene(scene, model);
-                scenes.push_back(std::make_shared<DynaPoseScene>(scene));
+                DynaPoseScene dynaPoseScene(scene, modelPtr);
+                scenes.push_back(std::make_shared<DynaPoseScene>(dynaPoseScene));
             }
 
         }

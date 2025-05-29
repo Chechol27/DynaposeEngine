@@ -28,7 +28,7 @@ namespace DynaPose
         {
             const int& gameRootId = rig.Get("gameRoot").GetNumberAsInt();
             const int& proxyRootId = rig.Get("proxyRoot").GetNumberAsInt();
-            const tinygltf::Node* node = &_model.nodes[gameRootId];
+            //const tinygltf::Node* node = &_model->nodes[ga]
         }
     }
 }
