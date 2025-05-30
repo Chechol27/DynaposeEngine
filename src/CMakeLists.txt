@@ -19,7 +19,6 @@ file(GLOB_RECURSE DYNAPOSE_SOURCES
 )
 
 
-
 add_library(DynaPoseLib SHARED
         ${DYNAPOSE_HEADERS}
         ${DYNAPOSE_SOURCES}
@@ -27,7 +26,6 @@ add_library(DynaPoseLib SHARED
 
 target_include_directories(DynaPoseLib PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/DynaposeEngine
-        ${CMAKE_BINARY_DIR}/_deps/glm-src/glm
 )
 
 target_precompile_headers(DynaPoseLib PRIVATE

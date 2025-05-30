@@ -22,8 +22,10 @@ namespace DynaPose
     public:
         static World* GetInstance();
 
-        void LoadScene(const tinygltf::Model model, int sceneId);
+        void LoadScene(const tinygltf::Model& model, int sceneId);
         void Update();
         void Flush();
+
+        unsigned long long GetObjectCount();
     };
 }

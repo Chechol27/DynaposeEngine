@@ -6,5 +6,5 @@
 using namespace DynaPose;
 namespace DynaPoseIO
 {
-    void ReadTransformGraph(const tinygltf::Node& node, Transform& transform);
+    void ReadTransformGraph(const tinygltf::Model& model, const tinygltf::Node& node, Transform& transform);
 }

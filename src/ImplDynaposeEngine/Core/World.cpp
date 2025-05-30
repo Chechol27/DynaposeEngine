@@ -1,4 +1,7 @@
 ﻿#include "Core/World.h"
+
+#include <iostream>
+
 #include "Serialization/Serializers/TransformSerializer.h"
 
 namespace DynaPose
@@ -9,14 +12,14 @@ namespace DynaPose
         return &instance;
     }
 
-    void World::LoadScene(const tinygltf::Model model, int sceneId)
+    void World::LoadScene(const tinygltf::Model& model, int sceneId)
     {
         Flush();
         const tinygltf::Scene& sceneObj = model.scenes[sceneId];
         for (const auto& node : sceneObj.nodes)
         {
-            Transform loadedTransform;
-            DynaPoseIO::ReadTransformGraph(model.nodes[node], loadedTransform);
+            Transform loadedTransform{};
+            DynaPoseIO::ReadTransformGraph(model, model.nodes[model.nodes[node].children[0]], loadedTransform);
             transforms.push_back(std::make_shared<Transform>(loadedTransform));
         }
     }
@@ -34,5 +37,10 @@ namespace DynaPose
     void World::Flush()
     {
         transforms.clear();
+    }
+
+    unsigned long long World::GetObjectCount()
+    {
+        return transforms.size();
     }
 }

@@ -1,9 +1,23 @@
 ﻿#include "Core/Transform.h"
+
+#include <iostream>
+
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/gtx/quaternion.hpp"
+#include <glm/gtx/string_cast.hpp>
 
 namespace DynaPose
 {
+    Transform::Transform()
+    {
+        parent = nullptr;
+        children = std::vector<std::shared_ptr<Transform>>();
+        localPosition = glm::vec3(0, 0, 0);
+        rotation = glm::quat(1,0,0,0);
+        scale = glm::vec3(1,1,1);
+        localToWorld = glm::mat4(1);
+    }
+
     Transform::Transform(const Transform& other)
     {
         parent = other.parent;
@@ -11,7 +25,7 @@ namespace DynaPose
         rotation = other.rotation;
         scale = other.scale;
         children = other.children;
-        UpdateMatrix();
+        localToWorld = other.localToWorld;
     }
 
     void Transform::Update(bool dirty)
@@ -42,7 +56,7 @@ namespace DynaPose
         return dirty;
     }
 
-    bool Transform::SetDirty(const bool& dirty)
+    void Transform::SetDirty(const bool& dirty)
     {
         this->dirty = dirty;
     }

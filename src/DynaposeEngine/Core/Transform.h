@@ -2,10 +2,10 @@
 #include <memory>
 #include <vector>
 
-#include "glm/vec3.hpp"
-#include "glm/vec4.hpp"
-#include "glm/gtx/quaternion.hpp"
-#include "glm/mat4x4.hpp"
+#include <vec3.hpp>
+#include <mat4x4.hpp>
+#include <vec4.hpp>
+#include <gtx/quaternion.hpp>
 
 
 namespace DynaPose
@@ -22,13 +22,13 @@ namespace DynaPose
         glm::mat4x4 localToWorld{};
         bool dirty = false;
     public:
-        Transform() = default;
+        Transform();
         Transform(const Transform& other);
         void Update(bool dirty);
         void UpdateMatrix();
 
         bool GetDirty();
-        bool SetDirty(const bool& dirty);
+        void SetDirty(const bool& dirty);
 
         void GetLocalPosition(glm::vec3& position);
         void GetPosition(glm::vec3& position);
