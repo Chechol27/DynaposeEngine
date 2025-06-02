@@ -1,14 +1,25 @@
 ﻿#include "Core/World.h"
 
+#include <format>
 #include <iostream>
+#include <entt/entt.hpp>
 
+#include "Core/ECS/Components/Name.h"
 #include "Serialization/Serializers/TransformSerializer.h"
+#include "Core/ECS/Components/Transform.h"
 
+
+using namespace DynaPoseComponents;
 namespace DynaPose
 {
+    World::World()
+    {
+        registry = entt::registry{};
+    }
+
     World* World::GetInstance()
     {
-        static World instance;
+        static World instance{};
         return &instance;
     }
 
@@ -18,29 +29,43 @@ namespace DynaPose
         const tinygltf::Scene& sceneObj = model.scenes[sceneId];
         for (const auto& node : sceneObj.nodes)
         {
-            Transform loadedTransform{};
-            DynaPoseIO::ReadTransformGraph(model, model.nodes[model.nodes[node].children[0]], loadedTransform);
-            transforms.push_back(std::make_shared<Transform>(loadedTransform));
+            const tinygltf::Node& modelNode = model.nodes[node];
+            entt::entity entity = SpawnEntity(modelNode.name);
+            auto& loadedTransform = registry.emplace<Transform>(entity);
+            DynaPoseIO::ReadTransformGraph(model, modelNode, entity, entt::null, loadedTransform);
         }
+        bool test = false;
     }
 
     void World::Update()
     {
-        //Update all solvers
-        for (const auto& transform : transforms)
-        {
-            if (!transform->GetParent())
-                transform->Update(true);
-        }
     }
 
     void World::Flush()
     {
-        transforms.clear();
+        registry.clear();
+    }
+
+    entt::entity World::SpawnEntity(const std::string& name)
+    {
+        const entt::entity entity = registry.create();
+        auto& entityName = registry.emplace<Name>(entity);
+        entityName.name = name;
+        return entity;
+    }
+
+    bool World::EntityValid(entt::entity entity)
+    {
+        return registry.valid(entity);
     }
 
     unsigned long long World::GetObjectCount()
     {
-        return transforms.size();
+        return -1;
+    }
+
+    entt::registry* World::GetRegistry()
+    {
+        return &registry;
     }
 }

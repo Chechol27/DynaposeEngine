@@ -21,7 +21,18 @@ file(GLOB_RECURSE DYNAPOSE_SOURCES
 
 add_library(DynaPoseLib SHARED
         ${DYNAPOSE_HEADERS}
-        ${DYNAPOSE_SOURCES}
+        "${CMAKE_CURRENT_SOURCE_DIR}/ImplTinyGLTF.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/ImplDynaposeEngine/Core/ECS/Systems/ISystem.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/ImplDynaposeEngine/Core/ECS/Components/Transform.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/ImplDynaposeEngine/Core/ECS/Components/TransformUtils.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/ImplDynaposeEngine/Core/ECS/Systems/UpdateTransformMatrices.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/ImplDynaposeEngine/Core/World.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/ImplDynaposeEngine/Rigs/Rig.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/ImplDynaposeEngine/SceneDefinition/DynaPoseScene.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/ImplDynaposeEngine/SceneDefinition/DynaPoseSceneManager.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/ImplDynaposeEngine/Serialization/Serializers/TransformSerializer.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/ImplDynaposeEngine/Serialization/DynaPoseSerialization.cpp"
+        #${DYNAPOSE_SOURCES}
 )
 
 target_include_directories(DynaPoseLib PUBLIC

@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 23)
 include_directories(
         external/gltf
         external/spdlog/include
+        external/EnTT/single_include
         ${CMAKE_BINARY_DIR}/_deps/glm-src/glm
 )
 
