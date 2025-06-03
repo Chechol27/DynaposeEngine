@@ -17,17 +17,17 @@ namespace TransformUtils
 
     glm::vec3 GetWorldPosition(const Transform& transform)
     {
-        return glm::vec4(transform.localPosition, 1) * transform.localToWorld;
+        return glm::vec3{transform.localToWorld * glm::vec4(0, 0, 0, 1)};
     }
 
     void SetWorldPosition(Transform& transform, glm::vec3 position)
     {
-        auto& inverseSource = transform;
-        if (transform.parent != entt::null)
-        {
-            inverseSource = World::GetInstance()->GetComponent<Transform>(transform.parent);
-        }
-        transform.localPosition = GetInverseTransformMatrix(inverseSource) * glm::vec4(position, 1);
+        transform.localPosition = GetInverseTransformMatrix(transform) * glm::vec4(position, 1);
+    }
+
+    void SetEulerAngles(Transform& transform, glm::vec3 euler)
+    {
+        transform.rotation = glm::quat(euler);
     }
 
     void SetParent(entt::entity target, entt::entity parent, bool maintainWorldPosition)

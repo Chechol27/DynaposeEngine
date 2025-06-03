@@ -2,8 +2,6 @@
 
 #include <format>
 #include <iostream>
-#include <entt/entt.hpp>
-
 #include "Core/ECS/Components/Name.h"
 #include "Serialization/Serializers/TransformSerializer.h"
 #include "Core/ECS/Components/Transform.h"
@@ -37,10 +35,6 @@ namespace DynaPose
         bool test = false;
     }
 
-    void World::Update()
-    {
-    }
-
     void World::Flush()
     {
         registry.clear();
@@ -59,9 +53,18 @@ namespace DynaPose
         return registry.valid(entity);
     }
 
-    unsigned long long World::GetObjectCount()
+    entt::entity World::GetEntity(const std::string& name)
     {
-        return -1;
+        auto nameView = registry.view<Name>();
+        for (const auto& entityName : nameView.each())
+        {
+            Name nameData = std::get<1>(entityName);
+            if (nameData.name == name)
+            {
+                return std::get<0>(entityName);
+            }
+        }
+        return entt::null;
     }
 
     entt::registry* World::GetRegistry()
@@ -71,7 +74,7 @@ namespace DynaPose
 
     void World::UpdateSystems(float deltaTime)
     {
-        for (auto system : systems)
+        for (const auto& system : systems)
         {
             if (system->isStopped) continue;
             system->OnUpdate(deltaTime);

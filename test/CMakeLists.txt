@@ -18,6 +18,11 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 add_executable(DynaPoseTests
         TestDynaPoseSerialization.cpp
+        TestTransformUpdate.cpp
+)
+
+target_sources(DynaPoseTests PRIVATE
+    TestUtils.cpp
 )
 
 target_link_libraries(DynaPoseTests PRIVATE
@@ -27,11 +32,12 @@ target_link_libraries(DynaPoseTests PRIVATE
 )
 
 add_test(
-        NAME TestDeserialization
+        NAME TestDynaPose
         COMMAND DynaPoseTests
 )
 
-set_tests_properties(TestDeserialization PROPERTIES
+
+set_tests_properties(TestDynaPose PROPERTIES
     ENVIRONMENT "RESOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR}/TestFiles"
 )
 
