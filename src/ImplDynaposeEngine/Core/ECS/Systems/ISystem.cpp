@@ -2,15 +2,11 @@
 
 namespace DynaPoseSystems
 {
-    void ISystem::OnStart()
-    {
-    }
-
     void ISystem::OnStartRunning()
     {
     }
 
-    void ISystem::OnUpdate()
+    void ISystem::OnUpdate(float deltaTime)
     {
     }
 

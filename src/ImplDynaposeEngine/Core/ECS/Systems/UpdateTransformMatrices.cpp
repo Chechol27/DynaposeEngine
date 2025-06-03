@@ -4,6 +4,8 @@
 using namespace DynaPose;
 namespace DynaPoseSystems
 {
+    REGISTER_SYSTEM(UpdateTransformMatrices, true)
+
     void UpdateTransformMatrices::UpdateTransformMatrix(entt::entity owner, Transform& transform)
     {
         const glm::mat4x4 rotationMat = glm::toMat4(transform.rotation);
@@ -32,7 +34,7 @@ namespace DynaPoseSystems
         }
     }
 
-    void UpdateTransformMatrices::OnUpdate()
+    void UpdateTransformMatrices::OnUpdate(float deltaTime)
     {
         auto transformView = World::GetInstance()->GetRegistry()->view<Transform>();
         for (auto viewPair : transformView.each())

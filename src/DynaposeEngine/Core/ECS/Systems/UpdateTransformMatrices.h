@@ -8,10 +8,11 @@
 using namespace DynaPoseComponents;
 namespace DynaPoseSystems
 {
-    struct UpdateTransformMatrices : public ISystem
+    class UpdateTransformMatrices : public ISystem
     {
-        static void UpdateTransformMatrix(entt::entity owner, Transform& transform);
-        static void UpdateTransform(entt::entity owner, bool dirty);
-        void OnUpdate() override;
+        public:
+            static void UpdateTransformMatrix(entt::entity owner, Transform& transform);
+            static void UpdateTransform(entt::entity owner, bool dirty);
+            void OnUpdate(float deltaTime) override;
     };
 }

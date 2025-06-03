@@ -68,4 +68,13 @@ namespace DynaPose
     {
         return &registry;
     }
+
+    void World::UpdateSystems(float deltaTime)
+    {
+        for (auto system : systems)
+        {
+            if (system->isStopped) continue;
+            system->OnUpdate(deltaTime);
+        }
+    }
 }
