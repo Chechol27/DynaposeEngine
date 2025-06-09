@@ -5,9 +5,10 @@
 #include "Core/ECS/Components/Name.h"
 #include "Serialization/Serializers/TransformSerializer.h"
 #include "Core/ECS/Components/Transform.h"
+#include "Core/ECS/Components/TransformUtils.h"
 
 
-using namespace DynaPoseComponents;
+using namespace DynaPose::Components;
 namespace DynaPose
 {
     World::World()
@@ -67,9 +68,39 @@ namespace DynaPose
         return entt::null;
     }
 
+    void World::DeleteEntity(entt::entity entity)
+    {
+        Transform& transform = registry.get<Transform>(entity);
+        std::vector<entt::entity> entitiesToDelete{};
+        entitiesToDelete.push_back(entity);
+        TransformUtils::GatherHierarchy(&registry, transform, entitiesToDelete);
+        for (auto& entityToDelete : entitiesToDelete)
+        {
+            registry.destroy(entityToDelete);
+        }
+    }
+
+    void World::GetInGameEntities(const InGameEntity& entityIds, std::vector<entt::entity>& entityVector)
+    {
+        auto inGameEntityView = registry.view<InGameEntity>();
+        for (const auto& inGameEntityPair : inGameEntityView.each())
+        {
+            InGameEntity entityData = std::get<1>(inGameEntityPair);
+            if (entityData.gameActorHash == entityIds.gameActorHash && entityData.gameNodeHash == entityIds.gameNodeHash)
+            {
+                return entityVector.push_back(std::get<0>(inGameEntityPair));
+            }
+        }
+    }
+
     entt::registry* World::GetRegistry()
     {
         return &registry;
+    }
+
+    void World::SortSystems()
+    {
+        std::ranges::sort(systems, [](const std::shared_ptr<Systems::ISystem> &x, const std::shared_ptr<Systems::ISystem> &y){ return x->GetPriority() < y->GetPriority();});
     }
 
     void World::UpdateSystems(float deltaTime)

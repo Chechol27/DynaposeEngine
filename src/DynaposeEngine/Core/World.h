@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "tiny_gltf.h"
+#include "ECS/Components/InGameEntity.h"
 #include "ECS/Components/Transform.h"
 #include "ECS/Systems/ISystem.h"
 #include "entt/entt.hpp"
@@ -21,7 +22,7 @@ namespace DynaPose
         World& operator=(World&&) = delete;
         entt::registry registry;
         std::unique_ptr<tinygltf::Model> currentModel;
-        std::vector<std::shared_ptr<DynaPoseSystems::ISystem>> systems;
+        std::vector<std::shared_ptr<Systems::ISystem>> systems;
     public:
         static World* GetInstance();
         void LoadScene(const tinygltf::Model& model, int sceneId);
@@ -31,6 +32,8 @@ namespace DynaPose
         entt::entity SpawnEntity(const std::string& name);
         bool EntityValid(entt::entity entity);
         entt::entity GetEntity(const std::string& name);
+        void DeleteEntity(entt::entity entity);
+        void GetInGameEntities(const Components::InGameEntity& entity, std::vector<entt::entity>& entityVector);
 #pragma endregion
 
 #pragma region Component Management
@@ -42,14 +45,16 @@ namespace DynaPose
 #pragma endregion
 
 #pragma region System Management
+        void SortSystems();
         template<typename T>
         std::shared_ptr<T> RegisterSystem(bool autoStart)
         {
             std::shared_ptr<T> system = std::make_shared<T>();
             systems.push_back(system);
+            SortSystems();
             if (autoStart)
             {
-                std::shared_ptr<DynaPoseSystems::ISystem> generalSystem = static_pointer_cast<DynaPoseSystems::ISystem>(system);
+                std::shared_ptr<Systems::ISystem> generalSystem = static_pointer_cast<Systems::ISystem>(system);
                 generalSystem->isStopped = false;
                 generalSystem->OnStartRunning();
             }
@@ -106,56 +111,4 @@ namespace DynaPose
     {
         return registry.get<T>(entity);
     }
-
-    // template <typename T>
-    // std::shared_ptr<T> World::RegisterSystem(bool autoStart)
-    // {
-    //     std::shared_ptr<T> system = std::make_shared<T>();
-    //     systems.push_back(system);
-    //     if (autoStart)
-    //     {
-    //         std::shared_ptr<DynaPoseSystems::ISystem> generalSystem = static_pointer_cast<DynaPoseSystems::ISystem>(system);
-    //         generalSystem->isStopped = false;
-    //         generalSystem->OnStartRunning();
-    //     }
-    //     return system;
-    // }
-
-    // template <typename T>
-    // bool World::StopSystem()
-    // {
-    //     for (auto& system : systems)
-    //     {
-    //         std::shared_ptr<T> systemPtr = dynamic_pointer_cast<T>(system);
-    //         if (systemPtr != nullptr)
-    //         {
-    //             if (!systemPtr->isStopped)
-    //             {
-    //                 systemPtr->isStopped = true;
-    //                 systemPtr->OnStopRunning();
-    //                 return true;
-    //             }
-    //         }
-    //     }
-    //     return false;
-    // }
-
-    // template <typename T>
-    // bool World::StartSystem()
-    // {
-    //     for (auto& system : systems)
-    //     {
-    //         std::shared_ptr<T> systemPtr = dynamic_pointer_cast<T>(system);
-    //         if (systemPtr != nullptr)
-    //         {
-    //             if (systemPtr->isStopped)
-    //             {
-    //                 systemPtr->isStopped = false;
-    //                 systemPtr->OnStartRunning();
-    //                 return true;
-    //             }
-    //         }
-    //     }
-    //     return false;
-    // }
 }

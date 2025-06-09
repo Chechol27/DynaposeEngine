@@ -1,5 +1,5 @@
-﻿#include "../../../../DynaposeEngine/Core/ECS/Components/TransformUtils.h"
-#include "../../../../DynaposeEngine/Core/ECS/Components/Transform.h"
+﻿#include "Core/ECS/Components/TransformUtils.h"
+#include "Core/ECS/Components/Transform.h"
 #include "Core/World.h"
 
 using namespace DynaPose;
@@ -75,5 +75,33 @@ namespace TransformUtils
             }
         }
         return false;
+    }
+
+    void GatherHierarchy(entt::registry* registry, Transform& root, std::vector<entt::entity>& entityVector)
+    {
+        for (auto& child : root.children)
+        {
+            entityVector.push_back(child);
+            Transform& childTransform = registry->get<Transform>(child);
+            GatherHierarchy(registry, childTransform, entityVector);
+        }
+    }
+
+    void UpdateMatrixAsChild(Transform& target, Transform& parent)
+    {
+        glm::mat4 localToWorld = glm::mat4(1.0f);
+        localToWorld = glm::scale(localToWorld, target.scale);
+        localToWorld = localToWorld * glm::mat4_cast(target.rotation);
+        localToWorld = glm::translate(localToWorld, target.localPosition);
+
+        localToWorld *= parent.localToWorld;
+        target.localToWorld = localToWorld;
+    }
+
+    void InterpolateTransform(Transform& a, Transform& b, float t, Transform& target)
+    {
+        target.localPosition = a.localPosition * t + b.localPosition * (1 - t);
+        target.rotation = glm::slerp(a.rotation, b.rotation, t);
+        target.scale = a.scale * t + b.scale * (1 - t);
     }
 }

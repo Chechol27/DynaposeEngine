@@ -5,10 +5,9 @@
 #include <vec3.hpp>
 #include <mat4x4.hpp>
 #include <gtx/quaternion.hpp>
-#include "../ECSHelper.h"
+#include <entt/entt.hpp>
 
-
-namespace DynaPoseComponents
+namespace DynaPose::Components
 {
     struct Transform
     {

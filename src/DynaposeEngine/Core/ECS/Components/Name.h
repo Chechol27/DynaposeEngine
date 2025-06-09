@@ -1,11 +1,12 @@
 ﻿#pragma once
 #include <string>
 
-namespace DynaPoseComponents
+namespace DynaPose::Components
 {
     class Name
     {
-        public:
-            std::string name;
+    public:
+        std::string name;
     };
 }
+

@@ -8,7 +8,7 @@
 
 #include "Core/World.h"
 
-namespace DynaPoseComponents
+namespace DynaPose::Components
 {
     Transform::Transform(entt::entity& parent)
     {

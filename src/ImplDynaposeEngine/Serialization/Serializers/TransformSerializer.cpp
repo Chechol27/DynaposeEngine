@@ -29,7 +29,7 @@ namespace DynaPoseIO
             transform.scale = glm::vec3(node.scale[0], node.scale[1], node.scale[2]);
 
         transform.parent = parent;
-        DynaPoseSystems::UpdateTransformMatrices::UpdateTransformMatrix(owner, transform);
+        Systems::UpdateTransformMatrices::UpdateTransformMatrix(owner, transform);
         for (const auto gltfNode : node.children)
         {
             auto childNode = model.nodes[gltfNode];

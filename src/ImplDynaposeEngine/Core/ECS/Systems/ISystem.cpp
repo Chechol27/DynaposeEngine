@@ -1,6 +1,6 @@
 ﻿#include "Core/ECS/Systems/ISystem.h"
 
-namespace DynaPoseSystems
+namespace DynaPose::Systems
 {
     void ISystem::OnStartRunning()
     {

@@ -4,7 +4,7 @@
 #include "Core/ECS/Components/Transform.h"
 
 using namespace DynaPose;
-using namespace DynaPoseComponents;
+using namespace DynaPose::Components;
 namespace DynaPoseIO
 {
     void ReadTransformGraph(const tinygltf::Model& model, const tinygltf::Node& node, entt::entity owner, entt::entity parent, Transform& transform);

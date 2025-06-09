@@ -1,11 +1,9 @@
 ﻿#include "Core/ECS/Systems/UpdateTransformMatrices.h"
-
-#include <iostream>
-
 #include "Core/World.h"
 #include "Core/ECS/Components/Transform.h"
-using namespace DynaPose;
-namespace DynaPoseSystems
+#include "Core/ECS/Systems/SystemStage.h"
+
+namespace DynaPose::Systems
 {
     REGISTER_SYSTEM(UpdateTransformMatrices, true)
 
@@ -38,7 +36,6 @@ namespace DynaPoseSystems
                 UpdateTransform(child, dirty);
             }
         }
-
     }
 
     void UpdateTransformMatrices::OnUpdate(float deltaTime)
@@ -51,5 +48,10 @@ namespace DynaPoseSystems
             entt::entity owner = std::get<0>(viewPair);
             UpdateTransform(owner, false);
         }
+    }
+
+    int UpdateTransformMatrices::GetPriority()
+    {
+        return static_cast<int>(SystemStage::UpdateTransformMatrices);
     }
 }
